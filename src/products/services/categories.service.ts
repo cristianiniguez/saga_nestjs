@@ -1,7 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { Category } from 'src/entities/category.entity';
-import { CreateCategoryDto, UpdateCategoryDto } from 'src/dtos/categories.dto';
+import { Category } from 'src/products/entities/category.entity';
+import {
+  CreateCategoryDto,
+  UpdateCategoryDto,
+} from 'src/products/dtos/categories.dto';
 
 const initialCategories: Category[] = [];
 

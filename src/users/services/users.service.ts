@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { User } from 'src/entities/user.entity';
-import { CreateUserDto, UpdateUserDto } from 'src/dtos/users.dto';
+import { User } from 'src/users/entities/user.entity';
+import { CreateUserDto, UpdateUserDto } from 'src/users/dtos/users.dto';
 
 const initialUsers: User[] = [];
 

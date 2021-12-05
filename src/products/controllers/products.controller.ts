@@ -11,9 +11,12 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { ProductsService } from 'src/services/products.service';
+import { ProductsService } from 'src/products/services/products.service';
 import { ParseIntPipe } from 'src/common/parse-int.pipe';
-import { CreateProductDTO, UpdateProductDTO } from 'src/dtos/products.dto';
+import {
+  CreateProductDTO,
+  UpdateProductDTO,
+} from 'src/products/dtos/products.dto';
 
 @Controller('products')
 export class ProductsController {
