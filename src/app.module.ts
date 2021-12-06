@@ -7,17 +7,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), HttpModule, UsersModule, ProductsModule],
+  imports: [HttpModule, UsersModule, ProductsModule, DatabaseModule],
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: 'API_KEY',
-      useValue:
-        process.env.NODE_ENV === 'production' ? 'QWERTYUIO' : '123456789',
-    },
     {
       provide: 'TASKS',
       useFactory: async (http: HttpService) => {
