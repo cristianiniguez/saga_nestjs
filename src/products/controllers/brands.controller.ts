@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 
 import { BrandsService } from 'src/products/services/brands.service';
-import { CreateBrandDto, UpdateBrandDto } from 'src/products/dtos/brands.dto';
+import { CreateBrandDTO, UpdateBrandDTO } from 'src/products/dtos/brands.dto';
 
 @Controller('brands')
 export class BrandsController {
@@ -27,14 +27,14 @@ export class BrandsController {
   }
 
   @Post()
-  create(@Body() payload: CreateBrandDto) {
+  create(@Body() payload: CreateBrandDTO) {
     return this.brandsService.create(payload);
   }
 
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() payload: UpdateBrandDto,
+    @Body() payload: UpdateBrandDTO,
   ) {
     return this.brandsService.update(id, payload);
   }

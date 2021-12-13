@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { User } from '../entities/user.entity';
 import { Order } from '../entities/order.entity';
-import { CreateUserDto, UpdateUserDto } from '../dtos/users.dto';
+import { CreateUserDTO, UpdateUserDTO } from '../dtos/users.dto';
 
 import { ProductsService } from '../../products/services/products.service';
 
@@ -37,7 +37,7 @@ export class UsersService {
     return user;
   }
 
-  create(payload: CreateUserDto) {
+  create(payload: CreateUserDTO) {
     this.counterId++;
     const newUser = {
       id: this.counterId,
@@ -47,7 +47,7 @@ export class UsersService {
     return newUser;
   }
 
-  update(id: number, payload: UpdateUserDto) {
+  update(id: number, payload: UpdateUserDTO) {
     const index = this.users.findIndex((item) => item.id === id);
 
     if (index === -1) {

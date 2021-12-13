@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Customer } from 'src/users/entities/customer.entity';
 import {
-  CreateCustomerDto,
-  UpdateCustomerDto,
+  CreateCustomerDTO,
+  UpdateCustomerDTO,
 } from 'src/users/dtos/customers.dto';
 
 const initialCustomers: Customer[] = [];
@@ -27,7 +27,7 @@ export class CustomersService {
     return customer;
   }
 
-  create(payload: CreateCustomerDto) {
+  create(payload: CreateCustomerDTO) {
     this.counterId++;
     const newCustomer = {
       id: this.counterId,
@@ -37,7 +37,7 @@ export class CustomersService {
     return newCustomer;
   }
 
-  update(id: number, payload: UpdateCustomerDto) {
+  update(id: number, payload: UpdateCustomerDTO) {
     const index = this.customers.findIndex((item) => item.id === id);
 
     if (index === -1) {

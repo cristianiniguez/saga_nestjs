@@ -11,8 +11,8 @@ import {
 
 import { CustomersService } from 'src/users/services/customers.service';
 import {
-  CreateCustomerDto,
-  UpdateCustomerDto,
+  CreateCustomerDTO,
+  UpdateCustomerDTO,
 } from 'src/users/dtos/customers.dto';
 
 @Controller('customers')
@@ -30,14 +30,14 @@ export class CustomersController {
   }
 
   @Post()
-  create(@Body() payload: CreateCustomerDto) {
+  create(@Body() payload: CreateCustomerDTO) {
     return this.customersService.create(payload);
   }
 
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() payload: UpdateCustomerDto,
+    @Body() payload: UpdateCustomerDTO,
   ) {
     return this.customersService.update(id, payload);
   }

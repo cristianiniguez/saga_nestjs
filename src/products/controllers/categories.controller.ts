@@ -11,8 +11,8 @@ import {
 
 import { CategoriesService } from 'src/products/services/categories.service';
 import {
-  CreateCategoryDto,
-  UpdateCategoryDto,
+  CreateCategoryDTO,
+  UpdateCategoryDTO,
 } from 'src/products/dtos/categories.dto';
 
 @Controller('categories')
@@ -30,14 +30,14 @@ export class CategoriesController {
   }
 
   @Post()
-  create(@Body() payload: CreateCategoryDto) {
+  create(@Body() payload: CreateCategoryDTO) {
     return this.categoriesService.create(payload);
   }
 
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() payload: UpdateCategoryDto,
+    @Body() payload: UpdateCategoryDTO,
   ) {
     return this.categoriesService.update(id, payload);
   }
