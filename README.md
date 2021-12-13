@@ -1,9 +1,8 @@
-# Curso de Backend con NestJS
+# Platzi Store
 
-Proyecto del [Curso de Backend con NestJS](https://platzi.com/clases/nestjs/) de Platzi
+Proyecto de la saga de cursos de NestJS de Platzi
 
-<p align=center>
-  <img src="https://static.platzi.com/media/achievements/badge-backend-nestjs-1409a1f0-34ad-495b-8144-14be0c0f0232.png" alt="Badge del Curso de Backend con NestJS de Platzi" width=100 />
-</p>
+- Curso de Backend con NestJS · [Ver curso](https://platzi.com/clases/nestjs/) · [Ver Apuntes](https://cristianiniguez.notion.site/Curso-de-Backend-con-NestJS-fd74327a39e24f53bdf65529eaf3c975)
+- Curso de NestJS: Programación Modular · [Ver curso](https://platzi.com/clases/nestjs-modular/) · [Ver Apuntes](https://cristianiniguez.notion.site/Curso-de-NestJS-Programaci-n-Modular-230f90017512489c9f0d793b8fa57679)
 
-Mis apuntes: https://cristianiniguez.notion.site/Curso-de-Backend-con-NestJS-fd74327a39e24f53bdf65529eaf3c975
+Documentación: https://guarded-hamlet-22705.herokuapp.com/docs/
