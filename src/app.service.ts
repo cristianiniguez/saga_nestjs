@@ -18,6 +18,7 @@ export class AppService {
   }
 
   getTasks() {
-    return this.database;
+    const tasksCollection = this.database.collection('tasks');
+    return tasksCollection.find().toArray();
   }
 }

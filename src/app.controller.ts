@@ -19,4 +19,9 @@ export class AppController {
   otherEndpoint() {
     return 'hello again';
   }
+
+  @Get('tasks')
+  getTasks() {
+    return this.appService.getTasks();
+  }
 }
