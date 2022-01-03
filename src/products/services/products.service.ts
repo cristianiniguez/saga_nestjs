@@ -1,33 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 import { Product } from 'src/products/entities/product.entity';
-import {
-  CreateProductDTO,
-  UpdateProductDTO,
-} from 'src/products/dtos/products.dto';
-
-const initialProducts: Product[] = [
-  {
-    id: 1,
-    name: 'Product 1',
-    description: 'bla bla',
-    price: 122,
-    image: '',
-    stock: 12,
-  },
-];
+// import {
+//   CreateProductDTO,
+//   UpdateProductDTO,
+// } from 'src/products/dtos/products.dto';
 
 @Injectable()
 export class ProductsService {
-  private counterId = initialProducts.length;
-  private products: Product[] = initialProducts;
+  constructor(
+    @InjectModel(Product.name) private productModel: Model<Product>,
+  ) {}
 
   findAll() {
-    return this.products;
+    return this.productModel.find().exec();
   }
 
-  findOne(id: number) {
-    const product = this.products.find((item) => item.id === id);
+  async findOne(id: string) {
+    const product = await this.productModel.findById(id).exec();
 
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
@@ -36,35 +28,35 @@ export class ProductsService {
     return product;
   }
 
-  create(payload: CreateProductDTO) {
-    this.counterId++;
-    const newProduct = {
-      id: this.counterId,
-      ...payload,
-    };
-    this.products.push(newProduct);
-    return newProduct;
-  }
+  // create(payload: CreateProductDTO) {
+  //   this.counterId++;
+  //   const newProduct = {
+  //     id: this.counterId,
+  //     ...payload,
+  //   };
+  //   this.products.push(newProduct);
+  //   return newProduct;
+  // }
 
-  update(id: number, payload: UpdateProductDTO) {
-    const index = this.products.findIndex((item) => item.id === id);
+  // update(id: number, payload: UpdateProductDTO) {
+  //   const index = this.products.findIndex((item) => item.id === id);
 
-    if (index === -1) {
-      throw new NotFoundException(`Product with id ${id} not found`);
-    }
+  //   if (index === -1) {
+  //     throw new NotFoundException(`Product with id ${id} not found`);
+  //   }
 
-    this.products[index] = { ...this.products[index], ...payload };
-    return this.products[index];
-  }
+  //   this.products[index] = { ...this.products[index], ...payload };
+  //   return this.products[index];
+  // }
 
-  remove(id: number) {
-    const index = this.products.findIndex((item) => item.id === id);
+  // remove(id: number) {
+  //   const index = this.products.findIndex((item) => item.id === id);
 
-    if (index === -1) {
-      throw new NotFoundException(`Product with id ${id} not found`);
-    }
+  //   if (index === -1) {
+  //     throw new NotFoundException(`Product with id ${id} not found`);
+  //   }
 
-    this.products.splice(index, 1);
-    return true;
-  }
+  //   this.products.splice(index, 1);
+  //   return true;
+  // }
 }

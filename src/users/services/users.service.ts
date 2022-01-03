@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { User } from '../entities/user.entity';
-import { Order } from '../entities/order.entity';
+// import { Order } from '../entities/order.entity';
 import { CreateUserDTO, UpdateUserDTO } from '../dtos/users.dto';
 
 import { ProductsService } from '../../products/services/products.service';
@@ -69,14 +69,14 @@ export class UsersService {
     return this.users;
   }
 
-  getOrdersByUser(id: number): Order[] {
+  async getOrdersByUser(id: number) {
     const user = this.findOne(id);
 
     return [
       {
         date: new Date(),
         user,
-        products: this.productsService.findAll(),
+        products: await this.productsService.findAll(),
       },
     ];
   }
