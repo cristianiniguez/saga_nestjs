@@ -3,10 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Product } from 'src/products/entities/product.entity';
-// import {
-//   CreateProductDTO,
-//   UpdateProductDTO,
-// } from 'src/products/dtos/products.dto';
+import {
+  CreateProductDTO,
+  UpdateProductDTO,
+} from 'src/products/dtos/products.dto';
 
 @Injectable()
 export class ProductsService {
@@ -28,35 +28,30 @@ export class ProductsService {
     return product;
   }
 
-  // create(payload: CreateProductDTO) {
-  //   this.counterId++;
-  //   const newProduct = {
-  //     id: this.counterId,
-  //     ...payload,
-  //   };
-  //   this.products.push(newProduct);
-  //   return newProduct;
-  // }
+  create(data: CreateProductDTO) {
+    const newProduct = new this.productModel(data);
+    return newProduct.save();
+  }
 
-  // update(id: number, payload: UpdateProductDTO) {
-  //   const index = this.products.findIndex((item) => item.id === id);
+  async update(id: string, data: UpdateProductDTO) {
+    const product = await this.productModel
+      .findByIdAndUpdate(id, { $set: data }, { new: true })
+      .exec();
 
-  //   if (index === -1) {
-  //     throw new NotFoundException(`Product with id ${id} not found`);
-  //   }
+    if (!product) {
+      throw new NotFoundException(`Product with id ${id} not found`);
+    }
 
-  //   this.products[index] = { ...this.products[index], ...payload };
-  //   return this.products[index];
-  // }
+    return product;
+  }
 
-  // remove(id: number) {
-  //   const index = this.products.findIndex((item) => item.id === id);
+  async remove(id: string) {
+    const product = await this.productModel.findByIdAndDelete(id).exec();
 
-  //   if (index === -1) {
-  //     throw new NotFoundException(`Product with id ${id} not found`);
-  //   }
+    if (!product) {
+      throw new NotFoundException(`Product with id ${id} not found`);
+    }
 
-  //   this.products.splice(index, 1);
-  //   return true;
-  // }
+    return true;
+  }
 }
