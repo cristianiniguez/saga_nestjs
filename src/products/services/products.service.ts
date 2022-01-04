@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { Product } from 'src/products/entities/product.entity';
 import {
   CreateProductDTO,
+  FilterProductsDTO,
   UpdateProductDTO,
 } from 'src/products/dtos/products.dto';
 
@@ -14,7 +15,12 @@ export class ProductsService {
     @InjectModel(Product.name) private readonly productModel: Model<Product>,
   ) {}
 
-  findAll() {
+  findAll(query?: FilterProductsDTO) {
+    if (query) {
+      const { limit, offset } = query;
+      return this.productModel.find().skip(offset).limit(limit).exec();
+    }
+
     return this.productModel.find().exec();
   }
 
