@@ -15,6 +15,7 @@ import {
   CreateProductDTO,
   UpdateProductDTO,
 } from 'src/products/dtos/products.dto';
+import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 
 @ApiTags('Products')
 @Controller('products')
@@ -38,7 +39,7 @@ export class ProductsController {
   }
 
   @Get(':id')
-  getProduct(@Param('id') id: string) {
+  getProduct(@Param('id', MongoIdPipe) id: string) {
     return this.productsService.findOne(id);
   }
 
@@ -48,12 +49,15 @@ export class ProductsController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() payload: UpdateProductDTO) {
+  update(
+    @Param('id', MongoIdPipe) id: string,
+    @Body() payload: UpdateProductDTO,
+  ) {
     return this.productsService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id', MongoIdPipe) id: string) {
     return this.productsService.remove(id);
   }
 }

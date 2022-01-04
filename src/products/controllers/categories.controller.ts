@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -14,6 +13,7 @@ import {
   CreateCategoryDTO,
   UpdateCategoryDTO,
 } from 'src/products/dtos/categories.dto';
+import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 
 @Controller('categories')
 export class CategoriesController {
@@ -25,7 +25,7 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  getCategory(@Param('id') id: string) {
+  getCategory(@Param('id', MongoIdPipe) id: string) {
     return this.categoriesService.findOne(id);
   }
 
@@ -35,12 +35,15 @@ export class CategoriesController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() payload: UpdateCategoryDTO) {
+  update(
+    @Param('id', MongoIdPipe) id: string,
+    @Body() payload: UpdateCategoryDTO,
+  ) {
     return this.categoriesService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id', MongoIdPipe) id: string) {
     return this.categoriesService.remove(id);
   }
 }
