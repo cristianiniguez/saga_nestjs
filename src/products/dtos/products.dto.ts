@@ -1,12 +1,13 @@
 import {
-  IsString,
-  IsNumber,
-  IsUrl,
-  IsNotEmpty,
-  IsPositive,
-  IsOptional,
-  Min,
   IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  IsUrl,
+  Min,
+  ValidateIf,
 } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
 
@@ -48,4 +49,14 @@ export class FilterProductsDTO {
   @IsInt()
   @Min(0)
   offset: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  minPrice: number;
+
+  @ValidateIf((params) => params.minPrice)
+  @IsNumber()
+  @Min(0)
+  maxPrice: number;
 }
