@@ -1,4 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 import { Category } from 'src/products/entities/category.entity';
 import {
@@ -6,56 +8,47 @@ import {
   UpdateCategoryDTO,
 } from 'src/products/dtos/categories.dto';
 
-const initialCategories: Category[] = [];
-
 @Injectable()
 export class CategoriesService {
-  private counterId = initialCategories.length;
-  private categories: Category[] = initialCategories;
+  constructor(
+    @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
+  ) {}
 
   findAll() {
-    return this.categories;
+    return this.categoryModel.find().exec();
   }
 
-  findOne(id: number) {
-    const category = this.categories.find((item) => item.id === id);
+  async findOne(id: string) {
+    const category = await this.categoryModel.findById(id).exec();
 
-    if (!category) {
+    if (!category)
       throw new NotFoundException(`Category with id ${id} not found`);
-    }
 
     return category;
   }
 
-  create(payload: CreateCategoryDTO) {
-    this.counterId++;
-    const newCategory = {
-      id: this.counterId,
-      ...payload,
-    };
-    this.categories.push(newCategory);
-    return newCategory;
+  create(data: CreateCategoryDTO) {
+    const newCategory = new this.categoryModel(data);
+    return newCategory.save();
   }
 
-  update(id: number, payload: UpdateCategoryDTO) {
-    const index = this.categories.findIndex((item) => item.id === id);
+  update(id: string, data: UpdateCategoryDTO) {
+    const category = this.categoryModel
+      .findByIdAndUpdate(id, { $set: data }, { new: true })
+      .exec();
 
-    if (index === -1) {
+    if (!category)
       throw new NotFoundException(`Category with id ${id} not found`);
-    }
 
-    this.categories[index] = { ...this.categories[index], ...payload };
-    return this.categories[index];
+    return category;
   }
 
-  remove(id: number) {
-    const index = this.categories.findIndex((item) => item.id === id);
+  remove(id: string) {
+    const category = this.categoryModel.findByIdAndDelete(id).exec();
 
-    if (index === -1) {
+    if (!category)
       throw new NotFoundException(`Category with id ${id} not found`);
-    }
 
-    this.categories.splice(index, 1);
     return true;
   }
 }

@@ -11,7 +11,7 @@ import {
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectModel(Product.name) private productModel: Model<Product>,
+    @InjectModel(Product.name) private readonly productModel: Model<Product>,
   ) {}
 
   findAll() {
@@ -21,9 +21,8 @@ export class ProductsService {
   async findOne(id: string) {
     const product = await this.productModel.findById(id).exec();
 
-    if (!product) {
+    if (!product)
       throw new NotFoundException(`Product with id ${id} not found`);
-    }
 
     return product;
   }
@@ -38,9 +37,8 @@ export class ProductsService {
       .findByIdAndUpdate(id, { $set: data }, { new: true })
       .exec();
 
-    if (!product) {
+    if (!product)
       throw new NotFoundException(`Product with id ${id} not found`);
-    }
 
     return product;
   }
@@ -48,9 +46,8 @@ export class ProductsService {
   async remove(id: string) {
     const product = await this.productModel.findByIdAndDelete(id).exec();
 
-    if (!product) {
+    if (!product)
       throw new NotFoundException(`Product with id ${id} not found`);
-    }
 
     return true;
   }

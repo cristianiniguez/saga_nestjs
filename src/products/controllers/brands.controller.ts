@@ -24,7 +24,7 @@ export class BrandsController {
   }
 
   @Get(':id')
-  getBrand(@Param('id', ParseIntPipe) id: number) {
+  getBrand(@Param('id') id: string) {
     return this.brandsService.findOne(id);
   }
 
@@ -34,15 +34,12 @@ export class BrandsController {
   }
 
   @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() payload: UpdateBrandDTO,
-  ) {
+  update(@Param('id') id: string, @Body() payload: UpdateBrandDTO) {
     return this.brandsService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id') id: string) {
     return this.brandsService.remove(id);
   }
 }
