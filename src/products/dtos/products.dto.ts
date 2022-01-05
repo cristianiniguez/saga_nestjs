@@ -8,8 +8,10 @@ import {
   IsUrl,
   Min,
   ValidateIf,
+  ValidateNested,
 } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
+import { CreateCategoryDTO } from './categories.dto';
 
 export class CreateProductDTO {
   @IsString()
@@ -33,6 +35,10 @@ export class CreateProductDTO {
   @IsUrl()
   @IsNotEmpty()
   readonly image: string;
+
+  @IsNotEmpty()
+  @ValidateNested()
+  readonly category: CreateCategoryDTO;
 }
 
 export class UpdateProductDTO extends PartialType(CreateProductDTO) {}
