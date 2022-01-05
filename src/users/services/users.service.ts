@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { User } from '../entities/user.entity';
-import { Order } from '../entities/order.entity';
 import { CreateUserDTO, UpdateUserDTO } from '../dtos/users.dto';
 
 import { ProductsService } from '../../products/services/products.service';
@@ -46,7 +45,7 @@ export class UsersService {
     return true;
   }
 
-  async getOrdersByUser(id: string): Promise<Order[]> {
+  async getOrdersByUser(id: string) {
     const user = await this.findOne(id);
 
     return [
