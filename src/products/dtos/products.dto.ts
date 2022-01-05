@@ -1,5 +1,6 @@
 import {
   IsInt,
+  IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -11,6 +12,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
+
 import { CreateCategoryDTO } from './categories.dto';
 
 export class CreateProductDTO {
@@ -39,6 +41,10 @@ export class CreateProductDTO {
   @IsNotEmpty()
   @ValidateNested()
   readonly category: CreateCategoryDTO;
+
+  @IsNotEmpty()
+  @IsMongoId()
+  readonly brand: string;
 }
 
 export class UpdateProductDTO extends PartialType(CreateProductDTO) {}
