@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsString,
   IsNotEmpty,
   IsPhoneNumber,
@@ -22,7 +23,9 @@ export class CreateCustomerDTO {
   @IsNotEmpty()
   readonly phone: string;
 
-  @ValidateNested()
+  @IsNotEmpty()
+  @IsArray()
+  @ValidateNested({ each: true })
   @Type(() => CreateSkillDTO)
   readonly skills: CreateSkillDTO[];
 }
