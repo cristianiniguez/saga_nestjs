@@ -41,8 +41,21 @@ export class OrdersService {
 
   async remove(id: string) {
     const order = await this.orderModel.findByIdAndDelete(id).exec();
-
     if (!order) throw new NotFoundException(`Order with id ${id} not found`);
     return true;
+  }
+
+  async addProducts(id: string, productIds: string[]) {
+    const order = await this.orderModel.findById(id);
+    if (!order) throw new NotFoundException(`Order with id ${id} not found`);
+    productIds.forEach((productId) => order.products.push(productId));
+    return order.save();
+  }
+
+  async removeProduct(id: string, productId: string) {
+    const order = await this.orderModel.findById(id);
+    if (!order) throw new NotFoundException(`Order with id ${id} not found`);
+    order.products.pull(productId);
+    return order.save();
   }
 }

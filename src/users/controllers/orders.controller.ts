@@ -10,7 +10,11 @@ import {
 
 import { OrdersService } from '../services/orders.service';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
-import { CreateOrderDTO, UpdateOrderDTO } from '../dtos/orders.dto';
+import {
+  AddProductsToOrderDTO,
+  CreateOrderDTO,
+  UpdateOrderDTO,
+} from '../dtos/orders.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -39,8 +43,24 @@ export class OrdersController {
     return this.ordersService.update(id, payload);
   }
 
+  @Put(':id/products')
+  addProducts(
+    @Param('id', MongoIdPipe) id: string,
+    @Body() payload: AddProductsToOrderDTO,
+  ) {
+    return this.ordersService.addProducts(id, payload.products);
+  }
+
   @Delete(':id')
   delete(@Param('id', MongoIdPipe) id: string) {
     return this.ordersService.remove(id);
+  }
+
+  @Delete(':id/products/:productId')
+  removeProduct(
+    @Param('id', MongoIdPipe) id: string,
+    @Param('productId', MongoIdPipe) productId: string,
+  ) {
+    return this.ordersService.removeProduct(id, productId);
   }
 }
