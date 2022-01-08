@@ -3,6 +3,7 @@ import { HttpModule, HttpService } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import * as Joi from 'joi';
+import { Client } from 'pg';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,6 +13,20 @@ import { DatabaseModule } from './database/database.module';
 
 import { environments } from './environments';
 import config from './config';
+
+const client = new Client({
+  user: 'root',
+  host: 'localhost',
+  database: 'my_db',
+  password: '123456',
+  port: 5432,
+});
+client.connect().then(() => {
+  client.query('SELECT * FROM tasks', (err, res) => {
+    if (err) throw err;
+    console.log(res.rows);
+  });
+});
 
 @Module({
   imports: [
