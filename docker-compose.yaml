@@ -16,5 +16,29 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: root@admin.com
       PGADMIN_DEFAULT_PASSWORD: root
+    depends_on:
+      - postgres
     ports:
       - 5050:80
+
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: my_db
+    ports:
+      - 3306:3306
+    volumes:
+      - ./.mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      PMA_HOST: mysql
+    ports:
+      - 8080:80
+    depends_on:
+      - mysql
+    volumes:
+      - ./.phpmyadmin_data:/var/lib/phpmyadmin
