@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { User } from '../entities/user.entity';
 import { Order } from '../entities/order.entity';
@@ -7,78 +8,47 @@ import { CreateUserDTO, UpdateUserDTO } from '../dtos/users.dto';
 
 import { ProductsService } from '../../products/services/products.service';
 
-const initialUsers: User[] = [];
-
 @Injectable()
 export class UsersService {
   constructor(
     private productsService: ProductsService,
-    private configService: ConfigService,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
   ) {}
 
-  private counterId = initialUsers.length;
-  private users: User[] = initialUsers;
-
   findAll() {
-    const apiKey = this.configService.get('API_KEY');
-    const dbName = this.configService.get('DATABASE_NAME');
-    console.log({ apiKey, dbName });
-
-    return this.users;
+    return this.userRepo.find();
   }
 
-  findOne(id: number) {
-    const user = this.users.find((item) => item.id === id);
-
-    if (!user) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-
+  async findOne(id: number) {
+    const user = await this.userRepo.findOne(id);
+    if (!user) throw new NotFoundException(`User with id ${id} not found`);
     return user;
   }
 
-  create(payload: CreateUserDTO) {
-    this.counterId++;
-    const newUser = {
-      id: this.counterId,
-      ...payload,
-    };
-    this.users.push(newUser);
-    return newUser;
+  create(data: CreateUserDTO) {
+    const newUser = this.userRepo.create(data);
+    return this.userRepo.save(newUser);
   }
 
-  update(id: number, payload: UpdateUserDTO) {
-    const index = this.users.findIndex((item) => item.id === id);
+  async update(id: number, data: UpdateUserDTO) {
+    const user = await this.userRepo.findOne(id);
 
-    if (index === -1) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
+    if (!user) throw new NotFoundException(`User with id ${id} not found`);
 
-    this.users[index] = { ...this.users[index], ...payload };
-    return this.users[index];
+    this.userRepo.merge(user, data);
+    return this.userRepo.save(user);
   }
 
-  remove(id: number) {
-    const index = this.users.findIndex((item) => item.id === id);
-
-    if (index === -1) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-
-    this.users.splice(index, 1);
-    return this.users;
+  async remove(id: number) {
+    const user = await this.userRepo.findOne(id);
+    if (!user) throw new NotFoundException(`User with id ${id} not found`);
+    return this.userRepo.delete(id);
   }
 
   async getOrdersByUser(id: number): Promise<Order[]> {
-    const user = this.findOne(id);
+    const user = await this.findOne(id);
     const products = await this.productsService.findAll();
-
-    return [
-      {
-        date: new Date(),
-        user,
-        products,
-      },
-    ];
+    return [{ date: new Date(), user, products }];
   }
 }
