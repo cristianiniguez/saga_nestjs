@@ -63,6 +63,11 @@ export class ProductsService {
       product.brand = brand;
     }
 
+    if (data.categoryIds) {
+      const categories = await this.categoryRepo.findByIds(data.categoryIds);
+      product.categories = categories;
+    }
+
     this.productRepo.merge(product, data);
     return this.productRepo.save(product);
   }
@@ -74,5 +79,27 @@ export class ProductsService {
       throw new NotFoundException(`Product with id ${id} not found`);
 
     return this.productRepo.delete(id);
+  }
+
+  async addCategory(id: number, categoryId: number) {
+    const product = await this.productRepo.findOne(id, {
+      relations: ['categories'],
+    });
+
+    const category = await this.categoryRepo.findOne(categoryId);
+    product.categories.push(category);
+    return this.productRepo.save(product);
+  }
+
+  async removeCategory(id: number, categoryId: number) {
+    const product = await this.productRepo.findOne(id, {
+      relations: ['categories'],
+    });
+
+    product.categories = product.categories.filter(
+      (category) => category.id !== categoryId,
+    );
+
+    return this.productRepo.save(product);
   }
 }
