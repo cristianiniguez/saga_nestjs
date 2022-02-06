@@ -7,6 +7,7 @@ import { Brand } from '../entities/brand.entity';
 import { Category } from '../entities/category.entity';
 import {
   CreateProductDTO,
+  FilterProductDTO,
   UpdateProductDTO,
 } from 'src/products/dtos/products.dto';
 
@@ -21,7 +22,16 @@ export class ProductsService {
     private readonly categoryRepo: Repository<Category>,
   ) {}
 
-  findAll() {
+  findAll(params?: FilterProductDTO) {
+    if (params) {
+      const { limit, offset } = params;
+      return this.productRepo.find({
+        relations: ['brand'],
+        take: limit,
+        skip: offset,
+      });
+    }
+
     return this.productRepo.find({ relations: ['brand'] });
   }
 

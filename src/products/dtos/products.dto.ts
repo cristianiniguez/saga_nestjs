@@ -6,6 +6,8 @@ import {
   IsPositive,
   IsInt,
   IsArray,
+  IsOptional,
+  Min,
 } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
 
@@ -43,3 +45,15 @@ export class CreateProductDTO {
 }
 
 export class UpdateProductDTO extends PartialType(CreateProductDTO) {}
+
+export class FilterProductDTO {
+  @IsInt()
+  @IsPositive()
+  @IsOptional()
+  limit: number;
+
+  @IsInt()
+  @Min(0)
+  @IsOptional()
+  offset: number;
+}
