@@ -2,9 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { Brand } from './brand.entity';
 
 @Entity()
 export class Product {
@@ -31,4 +34,7 @@ export class Product {
 
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  @ManyToOne(() => Brand)
+  brand: Brand;
 }
