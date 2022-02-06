@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -13,6 +14,7 @@ import { Brand } from './brand.entity';
 import { Category } from './category.entity';
 
 @Entity()
+@Index(['price', 'stock'])
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
@@ -23,6 +25,7 @@ export class Product {
   @Column({ type: 'text' })
   description: string;
 
+  @Index()
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
