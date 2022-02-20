@@ -18,9 +18,9 @@ export class AppService {
   }
 
   getTasks() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.pgClient.query('SELECT * FROM tasks', (err, res) => {
-        err ? reject(err) : resolve(res.rows);
+        err ? resolve([]) : resolve(res.rows);
       });
     });
   }
