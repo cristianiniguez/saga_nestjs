@@ -38,4 +38,5 @@ lerna-debug.log*
 .env.staging
 .env.production
 
-mongo_data
+# Folders starting with a period
+.**/
