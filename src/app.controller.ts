@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
+import { ApiKeyGuard } from './auth/guards/api-key.guard';
 
 @Controller()
 export class AppController {
@@ -10,9 +11,10 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('nuevo')
+  @UseGuards(ApiKeyGuard)
+  @Get('new')
   newEndpoint() {
-    return 'yo soy nuevo';
+    return 'I am new';
   }
 
   @Get('/ruta/')
