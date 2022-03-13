@@ -9,7 +9,9 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { ProductsService } from 'src/products/services/products.service';
@@ -22,6 +24,7 @@ import {
 
 @ApiTags('Products')
 @Controller('products')
+@UseGuards(AuthGuard('jwt'))
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
