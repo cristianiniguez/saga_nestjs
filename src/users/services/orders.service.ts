@@ -26,6 +26,16 @@ export class OrdersService {
     return order;
   }
 
+  async findByCustomer(customerId: number) {
+    const orders = await this.orderRepo.find({
+      where: {
+        customer: { id: customerId },
+      },
+      relations: ['items', 'items.product'],
+    });
+    return orders;
+  }
+
   async create(data: CreateOrderDTO) {
     const newOrder = new Order();
 
