@@ -12,12 +12,16 @@ import config from '../config';
       useFactory: (configService: ConfigType<typeof config>) => {
         const { connection, user, password, host, port, dbName } =
           configService.mongo;
-        return {
-          uri: `${connection}://${host}:${port}`,
-          user,
-          pass: password,
-          dbName,
-        };
+        return connection === 'mongodb+srv'
+          ? {
+              uri: `mongodb+srv://${user}:${password}@${host}/${dbName}?retryWrites=true&w=majority`,
+            }
+          : {
+              uri: `${connection}://${host}:${port}`,
+              user,
+              pass: password,
+              dbName,
+            };
       },
       inject: [config.KEY],
     }),
@@ -28,25 +32,7 @@ import config from '../config';
       useValue:
         process.env.NODE_ENV === 'production' ? 'QWERTYUIP' : '123456789',
     },
-    {
-      provide: 'MONGO',
-      useFactory: async (configService: ConfigType<typeof config>) => {
-        const { connection, user, password, host, port, dbName } =
-          configService.mongo;
-        const uri = `${connection}://${user}:${password}@${host}:${port}`;
-        const client = new MongoClient(uri, {
-          authSource: 'admin',
-          readPreference: 'primary',
-          directConnection: true,
-          ssl: false,
-        });
-        await client.connect();
-        const database = client.db(dbName);
-        return database;
-      },
-      inject: [config.KEY],
-    },
   ],
-  exports: ['API_KEY', 'MONGO', MongooseModule],
+  exports: ['API_KEY', MongooseModule],
 })
 export class DatabaseModule {}
