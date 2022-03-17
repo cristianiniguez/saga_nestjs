@@ -11,16 +11,14 @@ import config from '../config';
     TypeOrmModule.forRootAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { dbName, host, password, port, user } = configService.postgres;
         return {
           type: 'postgres',
-          host,
-          port,
-          username: user,
-          password,
-          database: dbName,
+          url: configService.database.url,
           synchronize: false,
           autoLoadEntities: true,
+          ssl: {
+            rejectUnauthorized: false,
+          },
         };
       },
     }),
@@ -34,13 +32,11 @@ import config from '../config';
     {
       provide: 'PG',
       useFactory: async (configService: ConfigType<typeof config>) => {
-        const { dbName, host, password, port, user } = configService.postgres;
         const client = new Client({
-          user,
-          host,
-          database: dbName,
-          password,
-          port: port,
+          connectionString: configService.database.url,
+          ssl: {
+            rejectUnauthorized: false,
+          },
         });
         await client.connect();
         return client;
