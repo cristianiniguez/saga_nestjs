@@ -9,7 +9,7 @@ const connectionOptions = {
   logging: false,
   migrations: ['src/database/migrations/*.ts'],
   migrationsTableName: 'migrations',
-  entities: ['src/**/*.entity.ts'],
+  entities: ['dist/**/*.entity.js'],
   cli: {
     migrationsDir: 'src/database/migrations',
   },
